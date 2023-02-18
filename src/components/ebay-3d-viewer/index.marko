@@ -1,3 +1,9 @@
+// @ts-check
+
+/**
+ * @typedef {import("./component").Input} Input
+ */
+
 import { processHtmlAttributes } from '../../common/html-attributes';
 static const isBrowser = typeof window !== 'undefined';
 static {
@@ -10,7 +16,7 @@ static {
 
 <div
     class=['three-d-player', input.class]>
-    <${'model-viewer'}
+    <model-viewer
         camera-controls
         touch-action="pan-y"
         key='3d-viewer'

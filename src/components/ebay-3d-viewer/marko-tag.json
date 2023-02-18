@@ -11,5 +11,7 @@
   "@a11y-text": "string",
   "@a11y-start-text": "string",
   "@a11y-load-text": "string",
-  "@error-text": "string"
+  "@error-text": "string",
+  "@src": "string",
+  "@version": "string"
 }

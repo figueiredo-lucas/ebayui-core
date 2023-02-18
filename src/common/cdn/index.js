@@ -13,6 +13,18 @@ const MAX_RETRIES = 3;
  * boolean stagger :  (optional) if all promises should be staggered or executed in any order
  */
 export class CDNLoader {
+    /**
+     * @param {Marko.Component} self
+     * @param {{
+     *   key: string,
+     *   files: string[],
+     *   types: string[],
+     *   setLoading: (value: boolean) => void,
+     *   handleSuccess: () => void,
+     *   handleError: (err: unknown) => void,
+     *   stagger?: boolean
+     * }} param1
+     */
     constructor(self, { key, files, types, setLoading, handleSuccess, handleError, stagger }) {
         this.self = self;
         this.retryTimes = 0;
