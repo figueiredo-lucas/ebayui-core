@@ -11,6 +11,9 @@
         "mocha",
         "compat"
     ],
+    "globals": {
+        "Marko": "readonly"
+    },
     "rules": {
         "import/order": [
             2,
