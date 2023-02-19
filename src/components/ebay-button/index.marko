@@ -1,3 +1,9 @@
+// @ts-check
+
+/**
+ * @typedef {import("./component-browser").Input} Input
+ */
+
 import { processHtmlAttributes } from "../../common/html-attributes"
 
 static function toJSON() {
@@ -49,7 +55,7 @@ $ {
     var variantClass = variant !== 'standard' && `${baseClass}--${input.variant}`;
     var tag = input.href ? "a" : "button";
     var split = input.split || 'none';
-    var htmlAttributes = processHtmlAttributes(data, ignoredAttributes);
+    var htmlAttributes = processHtmlAttributes(input, ignoredAttributes);
 }
 <${tag}
     ...htmlAttributes

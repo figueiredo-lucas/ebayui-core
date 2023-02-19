@@ -13,8 +13,8 @@ function camelToKebab(s) {
  * Create object of HTML attributes for pass-through to the DOM
  * All fields in ignore will be skipped. This should generally match with the marko.json
  * input fields so that duplicate/unwanted attributes will not be rendered
- * @param {Object} input
- * @param {Array} ignore
+ * @param {object} input
+ * @param {any[]} ignore
  */
 function processHtmlAttributes(input, ignore = EMPTY_ARR) {
     const attributes = {};
