@@ -1,28 +1,59 @@
+// @ts-check
+
 import * as eventUtils from '../../common/event-utils';
 import { getMaxWidth } from '../../common/dom';
 
-export default {
+/**
+ * @typedef {Marko.NativeTags["a" | "button"]["input"] & {
+ *   href?: string,
+ *   type?: string,
+ *   renderBody: Marko.Renderable
+ * }} Item
+ * @typedef {Marko.NativeTags["nav"]["input"] & {
+ *   items?: Item[],
+ *   class?: string | string[] | Record<string, boolean>,
+ *   a11yHeadingTag?: string,
+ *   a11yHeadingText?: string,
+ * }} Input
+ * @typedef {{
+ *   hiddenIndex: number[]
+ * }} State
+ * @extends {Marko.Component<Input, State>}
+ */
+export default class extends Marko.Component {
+    /** @type {number[]} */
+    cachedWidths;
+
+    /**
+     * @param {Event} originalEvent
+     */
     handleClick(originalEvent) {
         this.emit('select', { originalEvent, el: originalEvent.target });
-    },
+    }
 
+    /**
+     * @param {Event} originalEvent
+     */
     handleMenuBreadcrumb(originalEvent) {
         this.emit('select', { originalEvent, el: originalEvent.target });
-    },
+    }
 
     onCreate() {
         this.state = { hiddenIndex: [] };
-    },
+    }
 
     onMount() {
         this._calculateMaxItems();
         this.subscribeTo(eventUtils.resizeUtil).on('resize', this._calculateMaxItems.bind(this));
-    },
+    }
 
+    /**
+     * @param {Input} input
+     */
     onInput(input) {
         this.cachedWidths = [];
         const hiddenIndex = [];
-        if ((input.items || []).length > 4) {
+        if (input.items && input.items.length > 4) {
             // If we have more than 4 items, we automatically add them into hiddenIndexes.
             // The first, second to last, and last indexes will be shown automatically
             for (let i = 1; i < input.items.length - 2; i++) {
@@ -31,15 +62,18 @@ export default {
         }
         this.state.hiddenIndex = hiddenIndex;
         this.newInput = true;
-    },
+    }
 
     onUpdate() {
         if (this.newInput) {
             this.newInput = false;
             this._calculateMaxItems();
         }
-    },
+    }
 
+    /**
+     * @param {HTMLElement & { children: HTMLElement[] }} itemContainer
+     */
     _getItemWidths(itemContainer) {
         let itemWidths = this.cachedWidths;
         if (itemWidths.length !== itemContainer.children.length) {
@@ -50,7 +84,7 @@ export default {
                 if (currentItem.hasAttribute('hidden')) {
                     currentItem.removeAttribute('hidden');
                     itemWidths[i] = currentItem.offsetWidth;
-                    currentItem.setAttribute('hidden', true);
+                    currentItem.setAttribute('hidden', 'true');
                 } else {
                     itemWidths[i] = currentItem.offsetWidth;
                 }
@@ -58,7 +92,7 @@ export default {
             this.cachedWidths = itemWidths;
         }
         return itemWidths;
-    },
+    }
 
     _calculateMaxItems() {
         const { input, state } = this;
@@ -68,6 +102,7 @@ export default {
             return;
         }
 
+        /** @type {HTMLElement & { children: HTMLElement[] }} */
         const itemContainer = this.getEl('items');
         const maxWidth = getMaxWidth(itemContainer);
         const lastItemIndex = itemContainer.children.length - 1;
@@ -105,5 +140,5 @@ export default {
             }
         }
         state.hiddenIndex = hiddenIndex;
-    },
-};
+    }
+}
